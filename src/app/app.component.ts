@@ -11,4 +11,9 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'rick-morty';
+  tasks = [
+    "Uno",
+    "Dos",
+    "Tres"
+  ]
 }
