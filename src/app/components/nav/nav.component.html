@@ -1,0 +1,15 @@
+
+<div class="nav-main">
+    <ul>
+        <li *ngFor="let item of navItem;">
+            <a 
+            routerLink="{{'/' + item}}" 
+            ariaCurrentWhenActive="page"
+            routerLinkActive #nav="routerLinkActive" 
+            [ngClass]="[nav.isActive === true ? 'active' : '']">
+                {{item}}
+            </a>
+            <div *ngIf="nav.isActive" class="line"></div>
+        </li>
+    </ul>
+</div>
