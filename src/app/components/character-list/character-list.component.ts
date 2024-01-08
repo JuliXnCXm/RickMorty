@@ -1,29 +1,26 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, Input, inject, signal } from '@angular/core';
 import { Character } from '../../models/character.model';
 import { CharacterService } from '../../domains/shared/services/character.service';
+import { CharacterCardComponent } from '../character-card/character-card.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-character-list',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, CharacterCardComponent],
   templateUrl: './character-list.component.html',
   styleUrl: './character-list.component.sass'
 })
 export class CharacterListComponent {
-  characters = signal<Character[]>([])
+  charactersList = signal<Character[]>([])
+  charactersItems: any;
   private characterService = inject(CharacterService)
 
 
   ngOnInit() {
     this.characterService.getCharacters()
-    .subscribe({
-      next: (characters) => {
-        console.log(characters)
-        this.characters.set(characters)
-      },
-      error:(error) => {
-        console.log(error)
-      }
+    .subscribe((data:any) => {
+      this.charactersList.set(data.results)
     })
   }
 
