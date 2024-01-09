@@ -146,9 +146,19 @@ export class CharacterService {
       next: (response) => {
         this.state.set(State.Loaded);
         if (firstPage) {
-          this.list.set(response.results || response);
+          if (Array.isArray(response.results || response)) {
+            this.list.set(response.results || response);
+          } else {
+            this.list.set([ response ]);
+          }
         } else {
-          this.list.update((curr) => [...curr, ...(response.results || response)]);
+          if (Array.isArray(response.results || response)) {
+            this.list.update((
+              curr
+            ) => [...curr,...(response.results || response)]);
+          } else {
+            this.list.update((curr) => [...curr,response]);
+          }
         }
       },
       error: (error) => {

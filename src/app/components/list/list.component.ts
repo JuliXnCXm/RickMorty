@@ -6,6 +6,7 @@ import { CharacterCardComponent } from '../character-card/character-card.compone
 import { CommonModule } from '@angular/common';
 import { EpisodeCardComponent } from '../episode-card/episode-card.component';
 import { LocationCardComponent } from '../location-card/location-card.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -20,10 +21,21 @@ import { LocationCardComponent } from '../location-card/location-card.component'
   styleUrl: './list.component.sass',
 })
 export class CharacterListComponent implements AfterViewInit {
-  public characterService = inject(CharacterService);
-  @ViewChildren('character,episode,location', { read: TemplateRef}) public types!: QueryList<any>;
+  filtered: boolean  = false;
 
-  constructor() {}
+  @ViewChildren('character,episode,location', { read: TemplateRef}) public types!: QueryList<any>;
+  
+  private characterService = inject(CharacterService);
+  
+  constructor(private activeRouter: ActivatedRoute) {
+        this.activeRouter.queryParamMap.subscribe((params: any) => {
+      if (params.params.ids) {
+        this.filtered = true;
+      } else {
+        this.filtered = false;
+      }
+    });
+  }
 
   /**
    * Creates a new IntersectionObserver instance.
@@ -32,7 +44,7 @@ export class CharacterListComponent implements AfterViewInit {
    */
   private observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting && this.state == State.Loaded) {
+      if (entry.isIntersecting && this.state == State.Loaded && !this.filtered) {
         this.characterService.updatePage((page) => (page || 0) + 1);
       }
     });
