@@ -19,11 +19,30 @@ import { Action } from 'rxjs/internal/scheduler/Action';
   templateUrl: './home.component.html',
   styleUrl: './home.component.sass',
 })
+
+/**
+ * @classdesc
+ * The HomeComponent class is responsible for managing the home page.
+ * It contains the navigation bar, the search bar, and the character list.
+ * It also listens to the router events and updates the current URL.
+ */
+
 export class HomeComponent {
   currentUrl: string = '';
   complement: string = '';
 
+  /**
+   * Creates an instance of the HomeComponent.
+   * @param {Router} router - The router service.
+   * @param {ActivatedRoute} activeRouter - The activated route service.
+   */
   constructor(private router: Router, private activeRouter: ActivatedRoute) {
+    /**
+     * Subscribes to the query param map of the activated route.
+     * If the 'from' param is 'episodio', sets the complement to ' en el episodio [name]'.
+     * If the 'from' param is 'ubicacion', sets the complement to ' en la ubicacion [name]'.
+     * Otherwise, sets the complement to an empty string.
+     */
     this.activeRouter.queryParamMap.subscribe((params) => {
       if (params.get('from') == "episodio") {
         this.complement = ` en el episodio ${params.get('name')}`
@@ -33,6 +52,12 @@ export class HomeComponent {
         this.complement = "";
       }
     });
+     /**
+     * Subscribes to the router events.
+     * When a NavigationEnd event is triggered, extracts the primary segment of the current URL.
+     * Then, matches the URL against the possible values of 'personajes', 'episodios', or 'ubicaciones'.
+     * The matched value is set as the current URL.
+     */
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {

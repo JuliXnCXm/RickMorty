@@ -15,18 +15,22 @@ export class EpisodeCardComponent {
 
   constructor(private router: Router){}
 
-  onClick(data: Episode): void {
-    console.log(data);
-    
-    const ids = data.characters.map(e =>  e.split("/").at(-1));
+  /**
+ * @param {Episode} data 
+ * @description This function is triggered when the user clicks on the episode card. It logs the clicked episode in the console and navigates to the character list page with the list of characters from the clicked episode as a query parameter.
+ */
+onClick(data: Episode): void {
+  console.log(data);
 
-    this.router.navigate(['/personajes'], {
-      queryParams: {
-        ids: ids.join(","),
-        name: data.name,
-        from: "episodio"
-      }
-    });
-    
-  }
+  const ids = data.characters.map(e =>  e.split("/").at(-1));
+
+  this.router.navigate(['/personajes'], {
+    queryParams: {
+      ids: ids.join(","),
+      name: data.name,
+      from: "episodio"
+    }
+  });
+
+}
 }

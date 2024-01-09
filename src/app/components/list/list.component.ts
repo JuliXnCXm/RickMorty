@@ -25,6 +25,11 @@ export class CharacterListComponent implements AfterViewInit {
 
   constructor() {}
 
+  /**
+   * Creates a new IntersectionObserver instance.
+   * @param {Function} callback - A function that is called every time an intersection event occurs.
+   * @param {IntersectionObserverInit} [options] - An object that specifies options for the observer.
+   */
   private observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting && this.state == State.Loaded) {
@@ -32,6 +37,8 @@ export class CharacterListComponent implements AfterViewInit {
       }
     });
   });
+
+  
 
   ngAfterViewInit(): void {
     const ele = document.querySelector('#scroll-paginator');

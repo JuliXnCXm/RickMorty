@@ -26,12 +26,23 @@ export class CharacterService {
   private filters = signal<Record<string, string>>({});
   private ids = signal<string>("");
 
+    /**
+   * Creates an instance of CharacterService.
+   * @param {Location} location - An instance of the Location service.
+   * @param {Router} router - An instance of the Router service.
+   * @param {ActivatedRoute} activeRouter - An instance of the ActivatedRoute service.
+   */
   constructor(private location: Location, private router: Router, private activeRouter: ActivatedRoute) {
+      /**
+     * Sets the initial values of the service's properties.
+     */
     this.filters.set({
       page: '1',
       endPoint: this.location.path().substring(1) || 'personajes',
     });
-    
+      /**
+     * Subscribes to changes to the query parameters of the active route, and updates the service's `ids` property accordingly.
+     */
     this.activeRouter.queryParamMap.subscribe((params: any) => {
       if (params.params.ids) {
         this.ids.set(params.params.ids || "");
@@ -39,7 +50,9 @@ export class CharacterService {
         this.ids.set("");
       }
     });
-
+    /**
+     * Subscribes to navigation events from the router, and updates the service's `endPoint` property accordingly.
+     */
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -67,23 +80,40 @@ export class CharacterService {
       }
     );
   }
-
+    /**
+   * Returns the current state of the service.
+   * @returns {State} The current state of the service.
+   */
   get getState() {
     return this.state();
   }
-
+   /**
+   * Returns the list of characters returned from the Marvel API.
+   * @returns {any[]} The list of characters.
+   */
   get getList() {
     return this.list();
   }
-
+  /**
+   * Returns the type of search being performed.
+   * @returns {SearchType} The type of search being performed.
+   */
   get getSearchType() {
     return this.filters()['endPoint'];
   }
 
+    /**
+   * Updates the query of the list of characters based on the given query.
+   * @param {string} query - The query to search for.
+   */
   setQuery(query: string) {
     this.filters.update((curr) => ({ ...curr, name: query, page: '1' }));
   }
 
+    /**
+   * Updates the page of the list of characters based on the given callback function.
+   * @param {function(page?: number): number} callback - A function that takes a page number as an argument and returns a new page number.
+   */
   updatePage(callback: (page?: number) => number) {
     this.filters.update((curr) => {
       const newPage = callback(parseInt(curr['page']));
