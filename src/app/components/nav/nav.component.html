@@ -9,7 +9,7 @@
             [ngClass]="[nav.isActive === true ? 'active' : '']">
                 {{item}}
             </a>
-            <div *ngIf="nav.isActive" class="line"></div>
+            <div *ngIf="item == current" class="line"></div>
         </li>
     </ul>
 </div>

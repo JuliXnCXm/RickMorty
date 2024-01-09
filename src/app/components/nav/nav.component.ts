@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import env from '../../../enviroment/enviroment';
+import { Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
-RouterLink
 
 @Component({
   selector: 'app-nav',
@@ -12,9 +12,6 @@ RouterLink
   styleUrl: './nav.component.sass'
 })
 export class NavComponent {
-  navItem = [
-    "Ubicaciones",
-    "Episodios",
-    "Personajes",
-  ]
+  navItem = env.navItems;
+  @Input() current: string = "";
 }

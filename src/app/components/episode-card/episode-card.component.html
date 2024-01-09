@@ -1,0 +1,10 @@
+<div (click)="onClick(data)" class="characterCard-container">
+  <div class="characterCard-container__info">
+    <p>{{ data.name }}</p>
+    <span>Estreno: {{ data.air_date }}</span>
+    <span>No. Personajes: {{ data.characters.length }}</span>
+    <span
+      >Creacion: {{ data.created.substr(0, data.created.indexOf("T")) }}</span
+    >
+  </div>
+</div>

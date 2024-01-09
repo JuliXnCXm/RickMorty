@@ -1,11 +1,10 @@
 <div class="home-container">
-    <h1>{{ currentUrl }}</h1>
+    <h1>{{ currentUrl }} {{ complement }}</h1>
     <div>
         <app-input-searcher></app-input-searcher>
     </div>
     <section>    
-        <app-filters></app-filters>
-        <app-character-list></app-character-list>
-        <app-nav></app-nav>
+        <app-list></app-list>
+        <app-nav [current]="currentUrl"></app-nav>
     </section>
 </div>

@@ -1,0 +1,35 @@
+<div class="characterList-container">
+  @switch (state) { @case ("loading") {
+  <p>loading</p>
+  } @case ("error") {
+  <p>¡Ups, algo a ocurrido!</p>
+  } @case ("loaded") {
+  <ng-container
+    [ngTemplateOutlet]="type"
+  >
+</ng-container>
+  } }
+  <div id="scroll-paginator"></div>
+</div>
+
+<ng-template #character>
+  <app-character-card
+    *ngFor="let item of list"
+    [data]="item"
+  ></app-character-card>
+</ng-template>
+
+
+<ng-template #episode>
+  <app-episode-card
+    *ngFor="let item of list"
+    [data]="item"
+  ></app-episode-card>
+</ng-template>
+
+<ng-template #location>
+  <app-location-card
+    *ngFor="let item of list"
+    [data]="item"
+  ></app-location-card>
+</ng-template>

@@ -1,27 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { NavComponent } from '../../components/nav/nav.component';
 import { InputSearcherComponent } from '../../components/input-searcher/input-searcher.component';
-import { CharacterListComponent } from '../../components/character-list/character-list.component';
+import { CharacterListComponent } from '../../components/list/list.component';
 import { CommonModule } from '@angular/common';
-import { FiltersComponent } from '../../components/filters/filters.component';
-import { Location } from '@angular/common';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NavComponent,InputSearcherComponent,CharacterListComponent,FiltersComponent],
+  imports: [
+    CommonModule,
+    NavComponent,
+    InputSearcherComponent,
+    CharacterListComponent,
+  ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.sass'
+  styleUrl: './home.component.sass',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
+  currentUrl: string = '';
+  complement: string = '';
 
-  currentUrl: string;
-  
-  constructor(private location: Location) {
-    this.currentUrl = '';
-  }
-  
-  ngOnInit(): void {
-    this.currentUrl = this.location.path().substring(1);
+  constructor(private router: Router, private activeRouter: ActivatedRoute) {
+    this.activeRouter.queryParamMap.subscribe((params) => {
+      if (params.get('from') == "episodio") {
+        this.complement = ` en el episodio ${params.get('name')}`
+      } else if (params.get('from') == "ubicacion"){
+        this.complement = ` en la ubicacion ${params.get('name')}`
+      } else {
+        this.complement = "";
+      }
+    });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const path =
+          this.router.getCurrentNavigation()?.extractedUrl.root.children[
+            'primary'
+          ].segments[0].path || '';
+        const curr =
+          path?.match(/personajes|episodios|ubicaciones/g)?.at(0) ||
+          'personajes';
+        this.currentUrl = curr;
+      });
   }
 }

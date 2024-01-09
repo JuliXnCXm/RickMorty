@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CharacterService } from '../../domains/shared/services/character.service';
 
 @Component({
   selector: 'app-input-searcher',
@@ -7,19 +8,19 @@ import { Component } from '@angular/core';
   templateUrl: './input-searcher.component.html',
   styleUrl: './input-searcher.component.sass'
 })
+
 export class InputSearcherComponent {
-  // filterList(list:any) {
-  //   return list.filter((card,idx) => {
-  //     AbortSignal.set(card.photoname.toLowerCase().includes(query))
-  //   })
-  // } 
 
-  // memoizedAdd = memoizee(this.filterList);
+  private characterService = inject(CharacterService)
 
-  changeHandler(event: Event) {
-    const input  = event.target as HTMLInputElement
-    const query  = input.value
-
-  }
-
+  /**
+ * This function is called when the user types into the input field.
+ * It updates the filterQuery state of the CharacterService with the input value.
+ * @param {KeyboardEvent} event - The keyboard event that triggered the function call.
+ */
+changeHandler(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const query = input.value;
+  this.characterService.setQuery(query);
+}
 }
